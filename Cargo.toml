@@ -5,7 +5,8 @@ version = "0.1.0"
 edition = "2021"
 authors = ["Gabriel Falcão Gonçalves De Moura <gabrielteratos@gmail.com>"]
 documentation = "https://docs.rs/wait-303"
-homepage = "https://serde.rs/"
+homepage = "https://xkcd.com/303/"
+repository = "https://github.com/github-py/wait3/"
 readme = "README.md"
 license = "MIT or Apache-2.0"
 
