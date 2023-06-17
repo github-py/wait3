@@ -1,16 +1,13 @@
 # Wait3
 
 ![Build Status]([Build Status])
-![Actions]([Actions])
 ![Latest Version]([Latest Version])
-
 [crates.io]([crates.io])
 [[Rust 1.70]]
 
-[Build Status]: https://img.shields.io/github/actions/workflow/status/poemscodes/wait3/ci.yml?branch=doctor
-[Actions]: https://github.com/poemscodes/wait3/actions?query=branch%3Adoctor
+[Build Status]: https://github.com/github-py/wait3/actions/workflows/rust.yml/badge.svg
 [Latest Version]: https://img.shields.io/crates/v/wait3.svg
-[crates.io]: https://crates.io/crates/wait3
+[crates.io]: https://img.shields.io/crates/v/wait3.svg
 [Rust 1.70]: https://blog.rust-lang.org/2023/06/01/Rust-1.70.0.html
 
 **Wait for arbitrary conditions (e.g.: time, TCP connetions, etc) in the command-line)**
