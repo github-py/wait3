@@ -47,3 +47,6 @@ check:
 
 build test: check
 	cargo $@
+
+publish: release
+	cargo $@
