@@ -7,15 +7,14 @@ authors = ["Gabriel Falcão Gonçalves De Moura <gabrielteratos@gmail.com>"]
 documentation = "https://docs.rs/wait-303"
 homepage = "https://serde.rs/"
 readme = "README.md"
-license = "MIT"
-license-file = "LICENSE-MIT"
+license = "MIT or Apache-2.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-chrono = { version = "0.4.26", features = ["serde"] }
+chrono = { version = "0.4.26" } # , features = ["serde"] }
 clap = { version = "4.3.2", features = ["derive"] }
 regex = { version = "1.8.4", features = ["use_std"] }
-serde = { version = "1.0.164", features = ["derive", "serde_derive"] }
-serde_json = { version = "1.0.97", features = ["arbitrary_precision", "alloc", "preserve_order"] }
+# serde = { version = "1.0.164", features = ["derive", "serde_derive"] }
+# serde_json = { version = "1.0.97", features = ["arbitrary_precision", "alloc", "preserve_order"] }
 spinners = "4.1.0"
