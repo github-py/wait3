@@ -1,9 +1,9 @@
 # Wait3
 
-![Build Status]([Build Status])
-![Latest Version]([Latest Version])
-[crates.io]([crates.io])
-[[Rust 1.70]]
+![Build Status]
+![Latest Version]
+![crates.io]
+[Rust 1.70]
 
 [Build Status]: https://github.com/github-py/wait3/actions/workflows/rust.yml/badge.svg
 [Latest Version]: https://img.shields.io/crates/v/wait3.svg
