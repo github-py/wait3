@@ -1,4 +1,4 @@
-.PHONY: all clean cls release debug fix fmt check build test examples run-$(WAITFOR_NAME) run-$(SCANDISK_NAME)
+.PHONY: all clean cls release debug fix fmt check build test examples run-time run-sh
 
 INSTALL_PATH		:= $(HOME)/usr/bin/
 
@@ -7,6 +7,7 @@ WAITFOR_DEBUG_BIN	:=target/debug/$(WAITFOR_NAME)
 WAITFOR_RELEASE_BIN	:=target/release/$(WAITFOR_NAME)
 WAITFOR_BIN		:=$(WAITFOR_DEBUG_BIN)
 WAITFOR_RUN		:=cargo run --bin $(WAITFOR_NAME) --
+COMMAND			:='/bin/sh -c "sleep 4"'
 all: test debug release
 
 $(INSTALL_PATH):
@@ -18,11 +19,13 @@ $(WAITFOR_RELEASE_BIN): $(INSTALL_PATH)
 $(WAITFOR_DEBUG_BIN): $(INSTALL_PATH)
 	cargo build
 
-run-$(WAITFOR_NAME) run-$(SCANDISK_NAME):
-	cargo run --bin $(subst run-,,$@)
-
-e2e-$(WAITFOR_NAME):
+run-time:
 	$(WAITFOR_RUN) time 4s
+
+run-sh:
+	$(WAITFOR_RUN) sh $(COMMAND)
+	$(WAITFOR_RUN) command $(COMMAND)
+	$(WAITFOR_RUN) shell-command $(COMMAND)
 
 release: check fix | $(WAITFOR_RELEASE_BIN)
 	install $(WAITFOR_RELEASE_BIN) $(INSTALL_PATH)

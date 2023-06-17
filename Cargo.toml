@@ -19,3 +19,4 @@ regex = { version = "1.8.4", features = ["use_std"] }
 # serde = { version = "1.0.164", features = ["derive", "serde_derive"] }
 # serde_json = { version = "1.0.97", features = ["arbitrary_precision", "alloc", "preserve_order"] }
 spinners = "4.1.0"
+subprocess = "0.2.9"
