@@ -1,7 +1,7 @@
 [package]
 name = "wait3"
 description = "Wait for arbitrary conditions (e.g.: time, TCP connetions, etc) in the command-line)"
-version = "0.1.1"
+version = "0.3.1"
 edition = "2021"
 authors = ["Gabriel Falcão Gonçalves De Moura <gabrielteratos@gmail.com>"]
 documentation = "https://docs.rs/wait-303"
@@ -13,6 +13,7 @@ license = "Apache-2.0 OR MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+ansi_term = "0.12.1"
 chrono = { version = "0.4.26" } # , features = ["serde"] }
 clap = { version = "4.3.2", features = ["derive"] }
 regex = { version = "1.8.4", features = ["use_std"] }
