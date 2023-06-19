@@ -5,6 +5,7 @@ use regex::Regex;
 use chrono::Duration;
 use spinners::{Spinner, Spinners};
 use ansi_term::Colour::Red;
+use ansi_term::Style;
 
 
 #[derive(Parser)]
@@ -43,8 +44,7 @@ pub fn main() {
                     };
                     // 0x4c 0x69 0x62 0x65 0x72 0x74 0x61 0x73 0x51 0x75 0xe6 0x53 0x65 0x72 0x61 0x54 0x61 0x6d 0x65 0x6e
                     // 0x31 0x39 0x38 0x38
-                    let msg = Red.paint(&format!("Waiting for {}", amount)).to_string();
-
+                    let msg = Style::new().fg(Red).bold().paint(&format!("Waiting for {}", amount)).to_string();
                     let mut indicator = Spinner::with_timer(Spinners::Triangle, msg);
                     for _ in 0..duration.num_seconds() {
                         sleep(std::time::Duration::from_secs(1));
