@@ -1,7 +1,7 @@
 [package]
 name = "wait3"
-description = "Wait for arbitrary conditions (e.g.: time, TCP connetions, etc) in the command-line)"
-version = "0.3.1"
+description = "Wait for arbitrary conditions (e.g.: time, TCP connetions, etc on the command-line)"
+version = "0.3.2"
 edition = "2021"
 authors = ["Gabriel Falcão Gonçalves De Moura <gabrielteratos@gmail.com>"]
 documentation = "https://docs.rs/wait-303"
