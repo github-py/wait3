@@ -2,7 +2,7 @@
 use ansi_term::Colour::Fixed;
 use ansi_term::Style;
 use chrono::Duration;
-use clap::{Parser, Subcommand};
+use clap::{Parser};
 use regex::Regex;
 use spinners::{Spinner, Spinners};
 use std::process::Command;
@@ -10,33 +10,17 @@ use std::sync::mpsc::channel;
 use std::thread::{self, sleep};
 use std::time::Duration as SDuration;
 
-#[derive(Parser)]
-#[command(author, version, about, long_about = None)]
-#[command(propagate_version = true)]
-struct Cli {
-    #[command(subcommand)]
-    command: Commands,
-}
-
-#[derive(Subcommand)]
-enum Commands {
-    #[command(arg_required_else_help(true), about = "waits for units of time")]
-    Time { amount: String },
-    #[command(arg_required_else_help(true), about = "waits for subprocess (i.e.: command)")]
-    Subp { command: String, args: Vec<String> },
-    #[command(arg_required_else_help(true), about = "waits for command (i.e.: subprocess)")]
-    Cmd { command: String, args: Vec<String> },
-}
+use wait3::clap::{Cli, Commands};
 
 pub fn main() {
     let cli = Cli::parse();
     match cli.command {
-        Commands::Cmd { command, args } | Commands::Subp { command, args } => {
+        Commands::Cmd(opts) | Commands::Subp(opts) => {
             let (tx, rx) = channel();
-            let label = format!("{} {}", &command, args.clone().join(" "));
+            let label = format!("{} {}", &opts.command, opts.args.clone().join(" "));
             thread::spawn(move || {
-                let mut cmd = Command::new(&command.clone());
-                let cmd = cmd.args(args);
+                let mut cmd = Command::new(&opts.command.clone());
+                let cmd = cmd.args(opts.args);
                 tx.send(cmd.output().unwrap()).unwrap();
             });
             let msg = Style::new()
@@ -64,9 +48,9 @@ pub fn main() {
                 }
             }
         }
-        Commands::Time { amount } => {
+        Commands::Time(opts) => {
             let smh = Regex::new(r"^(\d+)(s|m|h)$").unwrap();
-            match smh.captures(&amount) {
+            match smh.captures(&opts.amount) {
                 Some(caps) => {
                     let number = caps.get(1).unwrap().as_str().parse::<u64>().unwrap();
                     let duration: Duration = match caps.get(2).unwrap().as_str() {
@@ -83,7 +67,7 @@ pub fn main() {
                     let msg = Style::new()
                         .fg(Fixed(220))
                         .bold()
-                        .paint(&format!("Waiting for {}", amount))
+                        .paint(&format!("Waiting for {}", opts.amount))
                         .to_string();
                     let mut indicator = Spinner::with_timer(Spinners::Layer, msg);
                     for _ in 0..duration.num_seconds() {
@@ -92,7 +76,7 @@ pub fn main() {
                     indicator.stop_and_persist("🔺", format!("Done!"));
                 }
                 None => {
-                    eprintln!("invalid amount {}", amount);
+                    eprintln!("invalid amount {}", opts.amount);
                     eprintln!(
                         "should a valid integer suffixed with s,m or h (seconds, minutes, hours)"
                     );
