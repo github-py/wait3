@@ -18,7 +18,7 @@ $(WAITFOR_RELEASE_BIN): $(INSTALL_PATH)
 $(WAITFOR_DEBUG_BIN): $(INSTALL_PATH)
 	cargo build
 
-run-$(WAITFOR_NAME) run-$(SCANDISK_NAME):
+run-$(WAITFOR_NAME):
 	cargo run --bin $(subst run-,,$@)
 
 e2e-$(WAITFOR_NAME):
