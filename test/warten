@@ -1,0 +1,4 @@
+# -*- coding: utf-8 -*-
+zeit=${@:=10}
+exec -a subp-dormant sleep ${zeit} &
+disown -h

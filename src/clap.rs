@@ -16,8 +16,10 @@ pub enum Commands {
     Time(TimeOpts),
     #[command(arg_required_else_help(true), about = "waits for subprocess (i.e.: command)")]
     Subp(SubprocessOpts),
-    #[command(arg_required_else_help(true), about = "waits for command (i.e.: subprocess)")]
+    #[command(arg_required_else_help(true), about = "alias for the command command")]
     Cmd(SubprocessOpts),
+    #[command(arg_required_else_help(true), about = "waits for command (i.e.: subprocess)")]
+    Command(SubprocessOpts),
 }
 
 #[derive(Args, Debug)]
@@ -29,4 +31,7 @@ pub struct TimeOpts {
 pub struct SubprocessOpts {
     pub command: String,
     pub args: Vec<String>,
+
+    #[arg(short = 'c', long = "exit", default_value_t = 0, help = "wait until command exits with this code")]
+    pub exit_code: i32,
 }

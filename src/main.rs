@@ -5,55 +5,44 @@ use chrono::Duration;
 use clap::{Parser};
 use regex::Regex;
 use spinners::{Spinner, Spinners};
-use std::process::Command;
-use std::sync::mpsc::channel;
-use std::thread::{self, sleep};
-use std::time::Duration as SDuration;
+
+
+use std::thread::{sleep};
+
 
 use wait3::clap::{Cli, Commands};
+use wait3::func::wait_for_subprocess;
 
 pub fn main() {
     let cli = Cli::parse();
     match cli.command {
-        Commands::Cmd(opts) | Commands::Subp(opts) => {
-            let (tx, rx) = channel();
+        Commands::Cmd(opts) | Commands::Command(opts) | Commands::Subp(opts) => {
             let label = format!("{} {}", &opts.command, opts.args.clone().join(" "));
-            thread::spawn(move || {
-                let mut cmd = Command::new(&opts.command.clone());
-                let cmd = cmd.args(opts.args);
-                tx.send(cmd.output().unwrap()).unwrap();
-            });
+
             let msg = Style::new()
                 .fg(Fixed(33))
                 .bold()
                 .paint(&format!(
-                    "Running command {}",
+                    "Running command {}\r",
                     Style::new().fg(Fixed(208)).bold().paint(label.clone())
                 ))
                 .to_string();
             let mut indicator = Spinner::with_timer(Spinners::OrangeBluePulse, msg);
-            let interval = SDuration::from_millis(10);
-            loop {
-                match rx.try_recv() {
-                    Ok(output) => {
-                        indicator.stop_and_persist("⚪️", format!("Finished {:?}", label).into());
-                        eprintln!("{}", String::from_utf8_lossy(&output.stderr));
-                        println!("{}", String::from_utf8_lossy(&output.stdout));
-                        break;
-                    }
-                    Err(_) => {
-                        sleep(interval);
-                        continue;
-                    }
-                }
+            let mut output = wait_for_subprocess(opts.command.clone(), opts.args.clone());
+            while Some(opts.exit_code) != output.status.code() {
+                output = wait_for_subprocess(opts.command.clone(), opts.args.clone());
             }
+            indicator.stop_with_newline();
         }
         Commands::Time(opts) => {
-            let smh = Regex::new(r"^(\d+)(s|m|h)$").unwrap();
+            let smh = Regex::new(r"^(\d+)(s|m|h|ms|ml|ns)$").unwrap();
             match smh.captures(&opts.amount) {
                 Some(caps) => {
                     let number = caps.get(1).unwrap().as_str().parse::<u64>().unwrap();
                     let duration: Duration = match caps.get(2).unwrap().as_str() {
+                        "ns" => Duration::nanoseconds(number.try_into().expect("invalid integer")),
+                        "ms" => Duration::microseconds(number.try_into().expect("invalid integer")),
+                        "ml" => Duration::milliseconds(number.try_into().expect("invalid integer")),
                         "s" => Duration::seconds(number.try_into().expect("invalid integer")),
                         "m" => Duration::minutes(number.try_into().expect("invalid integer")),
                         "h" => Duration::hours(number.try_into().expect("invalid integer")),
@@ -71,14 +60,14 @@ pub fn main() {
                         .to_string();
                     let mut indicator = Spinner::with_timer(Spinners::Layer, msg);
                     for _ in 0..duration.num_seconds() {
-                        sleep(std::time::Duration::from_secs(1));
+                        sleep(std::time::Duration::from_millis(1));
                     }
-                    indicator.stop_and_persist("🔺", format!("Done!"));
+                    indicator.stop_with_newline();
                 }
                 None => {
                     eprintln!("invalid amount {}", opts.amount);
                     eprintln!(
-                        "should a valid integer suffixed with s,m or h (seconds, minutes, hours)"
+                        "should a valid integer suffixed with {{ns,ms,ml}},s,m or h ({{nano,micro,milli,}}seconds, minutes, hours)"
                     );
                     eprintln!("example:");
                     eprintln!("\twait-for time 2m");
