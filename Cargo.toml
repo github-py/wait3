@@ -1,10 +1,10 @@
 [package]
 name = "wait3"
 description = "Wait for arbitrary conditions (e.g.: time, TCP connetions, etc on the command-line)"
-version = "0.3.3"
+version = "0.3.4"
 edition = "2021"
 authors = ["Gabriel Falcão Gonçalves De Moura <gabrielteratos@gmail.com>"]
-documentation = "https://docs.rs/wait-303"
+documentation = "https://docs.rs/wait3/"
 homepage = "https://xkcd.com/303/"
 repository = "https://github.com/github-py/wait3/"
 readme = "README.md"
