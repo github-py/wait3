@@ -15,7 +15,7 @@
 [Rust 1.70]: https://img.shields.io/badge/Rust%20Version-1.70-red
 
 
-**Wait for arbitrary conditions (e.g.: time, TCP connetions, etc) in the command-line)**
+**Wait for arbitrary conditions (e.g.: time, TCP connetions etc) in the command-line**
 
 ---
 
