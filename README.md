@@ -52,3 +52,9 @@ wait3 time <number><suffix>
 > ```bash
 > wait3 time 4m
 > ```
+
+> Wait for subprocess
+>
+> ```bash
+> wait3 command --exit 0 'sleep 9'
+> ```

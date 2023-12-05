@@ -17,20 +17,20 @@ pub fn main() {
     let cli = Cli::parse();
     match cli.command {
         Commands::Cmd(opts) | Commands::Command(opts) | Commands::Subp(opts) => {
-            let label = format!("{} {}", &opts.command, opts.args.clone().join(" "));
+            let cmd = opts.shell_command.clone();
 
             let msg = Style::new()
                 .fg(Fixed(33))
                 .bold()
                 .paint(&format!(
                     "Running command {}\r",
-                    Style::new().fg(Fixed(208)).bold().paint(label.clone())
+                    Style::new().fg(Fixed(208)).bold().paint(cmd)
                 ))
                 .to_string();
             let mut indicator = Spinner::with_timer(Spinners::OrangeBluePulse, msg);
-            let mut output = wait_for_subprocess(opts.command.clone(), opts.args.clone());
+            let mut output = wait_for_subprocess(opts.shell_command.clone());
             while Some(opts.exit_code) != output.status.code() {
-                output = wait_for_subprocess(opts.command.clone(), opts.args.clone());
+                output = wait_for_subprocess(opts.shell_command.clone());
             }
             indicator.stop_with_newline();
         }

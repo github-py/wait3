@@ -29,8 +29,7 @@ pub struct TimeOpts {
 
 #[derive(Args, Debug)]
 pub struct SubprocessOpts {
-    pub command: String,
-    pub args: Vec<String>,
+    pub shell_command: String,
 
     #[arg(short = 'c', long = "exit", default_value_t = 0, help = "wait until command exits with this code")]
     pub exit_code: i32,

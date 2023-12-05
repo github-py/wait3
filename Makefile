@@ -22,7 +22,7 @@ run-$(WAITFOR_NAME):
 	cargo run --bin $(subst run-,,$@)
 
 e2e-$(WAITFOR_NAME):
-	$(WAITFOR_RUN) command --exit 0 sleep 3
+	$(WAITFOR_RUN) command --exit 0 'sleep 3'
 	$(WAITFOR_RUN) time 3s
 
 release: check fix | $(WAITFOR_RELEASE_BIN)
